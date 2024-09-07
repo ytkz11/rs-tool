@@ -1,0 +1,10 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>images/error_prompt.png</file>
+    <file>images/rs.jpg</file>
+    <file>images/提醒_remind.png</file>
+    <file>images/ui图标.png</file>
+    <file>images/message.png</file>
+    <file>images/icon.ico</file>
+  </qresource>
+</RCC>
