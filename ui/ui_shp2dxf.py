@@ -22,6 +22,7 @@ class shp2dxfWidget(QFrame, Ui_Form):
         self.tool = Tool()
         self.currentSheet = None
         self.signals()
+        self.process_btn.setEnabled(False)
 
     def signals(self):
         """按钮触发， 主动调用"""
@@ -48,6 +49,7 @@ class shp2dxfWidget(QFrame, Ui_Form):
 
                 field_list = Shp2DxfPadding(self.tool.path).field
                 self.shp2dxf_header_box.addItems(field_list)
+                self.process_btn.setEnabled(True)
         else:
             self.header_box_clear()
     def header_box_clear(self):
@@ -55,7 +57,9 @@ class shp2dxfWidget(QFrame, Ui_Form):
         if self.shp2dxf_header_box.count() > 0:
             self.shp2dxf_header_box.clear()
             self.shp2dxf_header_box.setText("在上方输入正确shp文件，自动获取shp的字段")
-
+            self.tool.show_error(self, "❗️文件错误", "文件后缀错误")
+            # 按钮不可用
+            self.process_btn.setEnabled(False)
     def process(self):
         """处理"""
 
@@ -69,8 +73,7 @@ class shp2dxfWidget(QFrame, Ui_Form):
                 else:
                     self.shp2dxf_header_box.setText("输入的文件不存在，请输入正确的shp文件路径")
                     self.tool.show_error(self, "❗️文件错误", "文件不存在")
-            else:
-                self.tool.show_error(self, "❗️文件错误", "文件后缀错误")
+
 
 
 

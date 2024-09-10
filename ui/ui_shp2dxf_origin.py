@@ -23,7 +23,7 @@ class shp2dxfWidget_origin(QFrame, Ui_Form):
         self.tool = Tool()
         self.currentSheet = None
         self.signals()
-
+        self.shp2dxf_process_btn.setEnabled(False)
     def signals(self):
         """按钮触发， 主动调用"""
         self.shp2dxf_filepath_btn.clicked.connect(lambda: self.tool.handle_path(self.shp2dxf_filepath_line))
@@ -34,7 +34,12 @@ class shp2dxfWidget_origin(QFrame, Ui_Form):
         self.tool.get_suffix(self.shp2dxf_filepath_line)
         if self.tool.suffix not in ['.shp']:
             self.tool.show_error(self, "❗️文件错误", "文件后缀错误")
-
+        if os.path.exists(self.tool.path):
+            self.shp2dxf_process_btn.setEnabled(True)
+        else:
+            self.tool.show_error(self, "❗️文件错误", "文件后缀错误")
+            # 按钮不可用
+            self.shp2dxf_process_btn.setEnabled(False)
     def process(self):
         """处理"""
 

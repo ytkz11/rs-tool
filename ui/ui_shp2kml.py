@@ -35,7 +35,12 @@ class shp2kmlWidget_origin(QFrame, Ui_Form):
         self.tool.get_suffix(self.shp2kml_filepath_line)
         if self.tool.suffix not in ['.shp']:
             self.tool.show_error(self, "❗️文件错误", "文件后缀错误")
-
+        if os.path.exists(self.tool.path):
+            self.shp2kml_process_btn.setEnabled(True)
+        else:
+            self.tool.show_error(self, "❗️文件错误", "文件后缀错误")
+            # 按钮不可用
+            self.shp2kml_process_btn.setEnabled(False)
     def process(self):
         """处理"""
 
