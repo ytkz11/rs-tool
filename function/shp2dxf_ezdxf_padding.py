@@ -6,7 +6,7 @@
 
 '''
 import os.path
-from new_func.shp2dxf_ezdxf import *
+from function.shp2dxf_ezdxf import *
 class Shp2DxfPadding(Shp2Dxf):
     def __init__(self,filename):
         super().__init__(filename)

@@ -4,11 +4,11 @@
 # time: 2024/9/7 16:12
 # 按属性分层
 import os
-from PyQt5.QtCore import pyqtSignal
-from new_func.tools import Tool
-from resources.shpdxf_02 import Ui_Form
 from PyQt5.QtWidgets import QFrame
-from new_func.shp2dxf_ezdxf_padding import Shp2DxfPadding
+from PyQt5.QtCore import pyqtSignal
+from function.tools import Tool
+from function.shp2dxf_ezdxf_padding import Shp2DxfPadding
+from resources.shpdxf_02 import Ui_Form
 
 class shp2dxfWidget(QFrame, Ui_Form):
     error = pyqtSignal()
