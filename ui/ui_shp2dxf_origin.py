@@ -46,4 +46,6 @@ class shp2dxfWidget_origin(QFrame, Ui_Form):
                     self.progressBar.stop()
                 else:
                     self.shp2dxf_process_btn.setText("请输入正确的shp文件路径，再点击")
-
+                    self.tool.show_error(self, "❗️文件错误", "文件不存在")
+            else:
+                self.tool.show_error(self, "❗️文件错误", "文件后缀错误")
