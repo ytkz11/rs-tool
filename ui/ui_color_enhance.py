@@ -49,7 +49,7 @@ class color_enhanceWidget(QFrame, Ui_Form):
 
     def signals(self):
         """按钮触发， 主动调用"""
-        self.color_enhance_filepath_btn.clicked.connect(lambda: self.tool.handle_path(self.color_enhance_filepath_line))
+        self.color_enhance_filepath_btn.clicked.connect(lambda: self.tool.get_full_path(self.color_enhance_filepath_line))
         self.color_enhance_filepath_line.textChanged.connect(self.suffix_info)
 
         self.color_lineEdit.textChanged.connect(self.suffix_value_info)

@@ -46,20 +46,6 @@ class Tool(FluentWindow):
         self.path = ui_line.text()  # 获取路径
         self.suffix = Path(self.path).suffix
 
-    def csv_file_path(self, widget, ui_line):
-        """写入csv文件路径"""
-        self.get_file_path(widget)
-        self.handle_csv_path(ui_line)
-
-    def excel_file_path(self, widget, widget_line):
-        """写入excel文件路径"""
-        self.get_file_path(widget)
-        self.handle_excel_path(widget_line)
-
-    def handle_excel_path(self, widget_line):
-        """处理excel"""
-        self.path = widget_line.text()
-
     def handle_csv_path(self, widget_line):
         """处理获取数据"""
         self.path = widget_line.text()
@@ -72,6 +58,15 @@ class Tool(FluentWindow):
                                                    options=options)
         if file_name:
             widget_line_name.setText(file_name)
+
+    def get_full_path(self, widget_line_name):
+
+            """获取文件夹路径"""
+            options = QFileDialog.Options()
+            dir_name = QFileDialog.getExistingDirectory(None, "选择文件夹", "",
+                                                        options=options)
+            if dir_name:
+                widget_line_name.setText(dir_name)
 
     @staticmethod
     def show_success(self):
