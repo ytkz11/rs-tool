@@ -93,7 +93,7 @@ class color_enhanceWidget(QFrame, Ui_Form):
             self.color_process_btn.setText('正在进行植被色彩增强')
             for i, file in enumerate(tif_list):
                 ColorEnhancement(file, value = value).process()
-                self.progressBar.setValue((i+1)/len(tif_list))
+                self.progressBar.setValue((i+1)/len(tif_list)*100)
                 print(file)
             self.color_process_btn.setEnabled(True)
             self.color_process_btn.setText('完成进行植被色彩增强')

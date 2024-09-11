@@ -78,24 +78,24 @@ class Window(FluentWindow):
         self.worker = Worker(widget)
         self.worker.finished.connect(self.showFlyout)
         self.worker.start()  # 启动任务
-        self.worker.stop()
+
 
     def shp2dxf_layering_thread(self, widget):
             """"""
             self.worker = Worker(widget)
             self.worker.finished.connect(self.showFlyout)
             self.worker.start()  # 启动任务
-            self.worker.stop()
+
     def Shp2dxf_origin_layering_thread(self,widget):
         self.worker = Worker(widget)
         self.worker.finished.connect(self.showFlyout)
         self.worker.start()  # 启动任务
-        self.worker.stop()
+
     def Shp2kml_thread(self,widget):
         self.worker = Worker(widget)
         self.worker.finished.connect(self.showFlyout)
         self.worker.start()  # 启动任务
-        self.worker.stop()
+
 
 
     def showFlyout(self):
