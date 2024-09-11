@@ -4,7 +4,13 @@ from enum import Enum
 
 
 class Content(Enum):
-
+    ColorEnhancement_TITLE = "📣 植被色彩增强使用须知"
+    ColorEnhancement_CONTENT = """
+                        📢 批量处理输入文件夹下的影像
+                        📢 输入影像为4波段，分别是蓝、绿、红、近红外波段
+                        📢 阈值范围在0-1之间，一般使用0.3
+                        📢 输入结果保存在  输入文件夹下
+                        """
     SHP2DXF_TITLE = "📣 SHP TO DXF 使用须知"
     SHP2DXF_CONTENT = """📢 字段只支持英文、数字⌛，
                         📢 输出文件保存在输入文件相同的文件夹下
