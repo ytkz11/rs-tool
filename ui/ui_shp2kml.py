@@ -27,7 +27,7 @@ class shp2kmlWidget_origin(QFrame, Ui_Form):
 
     def signals(self):
         """按钮触发， 主动调用"""
-        self.shp2kml_filepath_btn.clicked.connect(lambda: self.tool.handle_path(self.shp2dxf_filepath_line))
+        self.shp2kml_filepath_btn.clicked.connect(lambda: self.tool.handle_path(self.shp2kml_filepath_line))
         self.shp2kml_filepath_line.textChanged.connect(self.suffix_info)
 
     def suffix_info(self):

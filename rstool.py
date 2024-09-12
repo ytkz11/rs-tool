@@ -141,3 +141,4 @@ if __name__ == '__main__':
     window = Window()
     window.show()
     app.exec_()
+    # pyinstaller -F -w -i G:\code\rstool\resources\images\icon.ico rstool.py
