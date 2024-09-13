@@ -4,6 +4,7 @@ from osgeo import ogr
 # shp to kml with label
 
 def convert_to_kml(shapefile, outfile=None):
+    dbffile = os.path.splitext(shapefile)[0] + '.dbf'
     outpath = os.path.dirname(shapefile)
     # 打开 Shapefile
     ds = ogr.Open(shapefile)
@@ -20,7 +21,7 @@ def convert_to_kml(shapefile, outfile=None):
 
     # 添加文档标题
     name = ET.SubElement(doc, "name")
-    name.text = os.path.basename(shapefile)
+    name.text = os.path.splitext(os.path.basename(shapefile))[0]
 
     # 添加样式
     style = ET.SubElement(doc, "Style", id="s_ylw-pushpin_hl")
@@ -63,13 +64,19 @@ def convert_to_kml(shapefile, outfile=None):
 
     # 添加 Placemark 元素
     i = 1
-    for feature in layer:
+    import dbfread
+
+    # 指定编码为 GBK (如果文件是用 GBK 编码)
+    table = dbfread.DBF(dbffile, encoding='gbk',ignorecase=True)
+    for record in table:
+        print(record)
+    for feature, record in zip(layer, table):
         placemark = ET.SubElement(doc, "Placemark", id=f"ID_{i}")
         name = ET.SubElement(placemark, "name")
-        name.text = feature.GetField(attribute_names[0])  # 假设第一个字段作为名称
+        name.text = str(i)
 
         description = ET.SubElement(placemark, "description")
-        description.text = "\n".join([f"{attr}: {feature.GetField(attr)}" for attr in attribute_names])
+        description.text = "\n".join([f"{attr}: {record[attr]}" for attr in attribute_names])
 
         style_url = ET.SubElement(placemark, "styleUrl")
         style_url.text = "#m_ylw-pushpin"
@@ -94,9 +101,7 @@ def convert_to_kml(shapefile, outfile=None):
 
 
 if __name__ == '__main__':
-    shapefile = r'D:/temp/out/Fisheries_test_clip.shp'
-    outpath = r'D:\temp\kml'
+    shapefile = r'C:\Users\Administrator\Documents\WeChat Files\wxid_ejyl8luu57t121\FileStorage\File\2024-09\Fisheries_20190927\2\Fisheries_20190927_temp.shp'
     # shapefile = input('输入shp文件：')
-    # outpath = input('输入保存路径：')
     convert_to_kml(shapefile)
     input('已完成，输入任意键退出！')

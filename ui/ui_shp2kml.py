@@ -11,8 +11,7 @@ from PyQt5.QtWidgets import QFrame
 from function.shp2kml_with_label import convert_to_kml
 from function.transfer_project import VectorTranslate
 
-from osgeo import ogr, osr
-
+from osgeo import ogr
 
 class shp2kmlWidget_origin(QFrame, Ui_Form):
     error = pyqtSignal()
@@ -69,7 +68,16 @@ class shp2kmlWidget_origin(QFrame, Ui_Form):
                                                             geometryType="POLYGON",
                                                             dim="XY",
                                         )
+                        # utf8
                         convert_to_kml(tempshp_file_name, self.tool.path)
+                        print("删除中间文件")
+                        try :
+                            # for file in [utf8_file, tempshp_file_name]:
+                            for file in [tempshp_file_name]:
+                                for suf in ['.shp', '.shx', '.dbf', '.proj']:
+                                    os.remove(os.path.splitext(file)[0]+suf)
+                        except Exception as e:
+                            print(e)
 
                         '''
                             VectorTranslate(

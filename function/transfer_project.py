@@ -5,7 +5,7 @@
 from osgeo import ogr, gdal
 from osgeo import osr
 import os
-
+import dbfread
 # 将矢量文件投影转换为 WGS84 坐标系并解决中文乱码问题
 def VectorTranslate(
         shapeFilePath,
@@ -29,6 +29,12 @@ def VectorTranslate(
     :param dim: 输出矢量文件坐标纬度，通常使用 "XY"
     :return: 输出文件的路径
     """
+    print("开始转为wgs84坐标系")
+
+    # dbffile = os.path.splitext(shapeFilePath)[0] + '.dbf'
+    # table = dbfread.DBF(dbffile, encoding='gbk')
+    # for record in table:
+    #     print(record)
     if not os.path.exists(saveFolderPath):
         os.makedirs(saveFolderPath)
 
@@ -46,6 +52,7 @@ def VectorTranslate(
     for feature in layer:
         for i in range(feature.GetFieldCount()):
             field_value = feature.GetFieldAsString(i)
+            print(field_value)
 
     spatial = layer.GetSpatialRef()
     layerName = layer.GetName()
@@ -76,8 +83,7 @@ def VectorTranslate(
         layerName=layerName,
         geometryType=geometryType,
         dim=dim,
-        where="1=1",
-        accessMode='overwrite',
+
     )
 
     # 执行矢量转换
@@ -96,8 +102,8 @@ def tif_reproject(file):
 
 
 if __name__ == '__main__':
-    shapeFilePath = r'D:/temp/out/Fisheries_20190927.shp'
-    saveFolderPath = r'D:/temp/out/84'
+    shapeFilePath = r'C:\Users\Administrator\Documents\WeChat Files\wxid_ejyl8luu57t121\FileStorage\File\2024-09\Fisheries_20190927\2\Fisheries_20190927.shp'
+    saveFolderPath = r'C:\Users\Administrator\Documents\WeChat Files\wxid_ejyl8luu57t121\FileStorage\File\2024-09\Fisheries_20190927\2'
 
     # 使用修改后的函数并指定源文件编码为 GBK
     VectorTranslate(
