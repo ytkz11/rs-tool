@@ -3,7 +3,7 @@ import xml.etree.ElementTree as ET
 from osgeo import ogr
 # shp to kml with label
 
-def convert_to_kml(shapefile):
+def convert_to_kml(shapefile, outfile=None):
     outpath = os.path.dirname(shapefile)
     # 打开 Shapefile
     ds = ogr.Open(shapefile)
@@ -79,11 +79,14 @@ def convert_to_kml(shapefile):
         i += 1
 
     # 创建 KML 文件
-    filename = os.path.basename(shapefile).split('.')[0]
     if not os.path.exists(outpath):
         os.makedirs(outpath)
-
-    out_file_path = os.path.join(outpath, f"{filename}.kml")
+    if outfile ==None:
+        filename = os.path.splitext(os.path.basename(shapefile))[0]
+        out_file_path = os.path.join(outpath, f"{filename}.kml")
+    else:
+        filename = os.path.splitext(os.path.basename(outfile))[0]
+        out_file_path = os.path.join(outpath, f"{filename}.kml")
     tree = ET.ElementTree(root)
     tree.write(out_file_path, encoding="UTF-8", xml_declaration=True)
 
@@ -91,7 +94,7 @@ def convert_to_kml(shapefile):
 
 
 if __name__ == '__main__':
-    shapefile = r'D:\temp\create_shp_by_fiona.shp'
+    shapefile = r'D:/temp/out/Fisheries_test_clip.shp'
     outpath = r'D:\temp\kml'
     # shapefile = input('输入shp文件：')
     # outpath = input('输入保存路径：')

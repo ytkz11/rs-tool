@@ -79,7 +79,6 @@ class Window(FluentWindow):
         self.worker.finished.connect(self.showFlyout)
         self.worker.start()  # 启动任务
 
-
     def shp2dxf_layering_thread(self, widget):
             """"""
             self.worker = Worker(widget)

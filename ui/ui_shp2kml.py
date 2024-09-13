@@ -9,7 +9,9 @@ from function.tools import Tool
 from resources.shpkml import Ui_Form
 from PyQt5.QtWidgets import QFrame
 from function.shp2kml_with_label import convert_to_kml
+from function.transfer_project import VectorTranslate
 
+from osgeo import ogr, osr
 
 
 class shp2kmlWidget_origin(QFrame, Ui_Form):
@@ -48,12 +50,54 @@ class shp2kmlWidget_origin(QFrame, Ui_Form):
             if self.tool.suffix == ".shp":
                 if os.path.exists(self.tool.path):
                     self.progressBar.start()
-                    convert_to_kml(self.tool.path)
-                    self.progressBar.stop()
+
+
+
+                    # 检查坐标系统是否为 WGS84
+                    if check_is_84(self.tool.path):
+                        print(f'The projection of the file is WGS84.')
+                        convert_to_kml(self.tool.path)
+                        self.progressBar.stop()
+                    else:
+                        print(f'The projection of the file is not WGS84.')
+                        tempshp_file_name = VectorTranslate(shapeFilePath = self.tool.path,
+                                        saveFolderPath = os.path.dirname(self.tool.path),
+                                                            format="ESRI Shapefile",
+                                                            accessMode=None,
+                                                            dstSrsESPG=4326,
+                                                            selectFields=None,
+                                                            geometryType="POLYGON",
+                                                            dim="XY",
+                                        )
+                        convert_to_kml(tempshp_file_name, self.tool.path)
+
+                        '''
+                            VectorTranslate(
+        shapeFilePath,
+        saveFolderPath,
+        format="ESRI Shapefile",
+        accessMode=None,
+        dstSrsESPG=4326,
+        selectFields=None,
+        geometryType="POLYGON",
+        dim="XY",
+    )
+                        '''
+
                 else:
                     self.shp2kml_process_btn.setText("请输入正确的shp文件路径，再点击")
                     self.tool.show_error(self, "❗️文件错误", "文件不存在")
             else:
                 self.tool.show_error(self, "❗️文件错误", "文件后缀错误")
 
-    #
+def check_is_84(file):
+    ds = ogr.Open(file)
+    layer = ds.GetLayer()
+    spatial_ref = layer.GetSpatialRef()
+
+    wkt = spatial_ref.ExportToPrettyWkt()
+
+    if 'WGS_1984' in wkt:
+        return True
+    else:
+        return False
