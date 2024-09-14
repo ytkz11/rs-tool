@@ -9,7 +9,7 @@ from function.tools import Tool
 from resources.shpkml import Ui_Form
 from PyQt5.QtWidgets import QFrame
 from function.shp2kml_with_label import convert_to_kml
-from function.transfer_project import VectorTranslate
+from function.transfer_project import transform_coordinate_and_recreate_new_dbf
 
 from osgeo import ogr
 
@@ -59,16 +59,7 @@ class shp2kmlWidget_origin(QFrame, Ui_Form):
                         self.progressBar.stop()
                     else:
                         print(f'The projection of the file is not WGS84.')
-                        tempshp_file_name = VectorTranslate(shapeFilePath = self.tool.path,
-                                        saveFolderPath = os.path.dirname(self.tool.path),
-                                                            format="ESRI Shapefile",
-                                                            accessMode=None,
-                                                            dstSrsESPG=4326,
-                                                            selectFields=None,
-                                                            geometryType="POLYGON",
-                                                            dim="XY",
-                                        )
-                        # utf8
+                        tempshp_file_name = transform_coordinate_and_recreate_new_dbf(self.tool.path, os.path.dirname(self.tool.path))
                         convert_to_kml(tempshp_file_name, self.tool.path)
                         print("删除中间文件")
                         try :
