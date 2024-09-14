@@ -6,6 +6,20 @@
 import dbf
 from osgeo import ogr, gdal, osr
 import os
+
+import dbfread
+
+def try_encoding(dbf_path, encodings=['GBK', 'GB18030', 'UTF-8']):
+    for encoding in encodings:
+        try:
+            table = dbfread.DBF(dbf_path, encoding=encoding)
+            for record in table:
+                print(f"Encoding: {encoding}")
+                print(record)
+                return encoding
+        except UnicodeDecodeError:
+            continue
+    return None
 # 将矢量文件投影转换为 WGS84 坐标系并解决中文乱码问题
 
 
@@ -18,41 +32,59 @@ def convert_shapefile_and_extract_attributes(input_shp):
     :param target_crs: 目标坐标系的EPSG代码，默认为4326 (WGS84)。
     :return: 包含属性表数据的字典列表。
     """
-    # 注册所有驱动
-    ogr.RegisterAll()
+    dbffile = os.path.splitext(input_shp)[0] + '.dbf'
 
-    # 打开源shapefile
-    data = ogr.Open(input_shp)
-    if data is None:
-        print(f"无法打开文件：{input_shp}")
+    gdal.SetConfigOption("SHAPE_ENCODING", "")
+
+    dbf_encoding = try_encoding(dbffile)
+
+    if dbf_encoding is None:
         return None
+    elif dbf_encoding == "GBK":
+        import dbfread
+        features_dict = []
+        # 指定编码为 GBK (如果文件是用 GBK 编码)
+        table = dbfread.DBF(dbffile, encoding='gbk', ignorecase=True)
+        for record in table:
+            features_dict.append(record)
+        return features_dict
+    elif dbf_encoding == "UTF-8":
 
-    # 获取第一个图层
-    layer = data.GetLayer()
-    if layer is None:
-        print("没有找到有效的图层")
-        return None
+        # 注册所有驱动
+        ogr.RegisterAll()
 
-    # 初始化属性表数据列表
-    features_dict = []
+        # 打开源shapefile
+        data = ogr.Open(input_shp)
+        if data is None:
+            print(f"无法打开文件：{input_shp}")
+            return None
 
-    # 遍历每个要素
-    for feature in layer:
-        # 创建新字典来保存属性
-        feature_dict = {}
+        # 获取第一个图层
+        layer = data.GetLayer()
+        if layer is None:
+            print("没有找到有效的图层")
+            return None
 
-        # 获取并保存属性值
-        for i in range(feature.GetFieldCount()):
-            field_name = layer.GetLayerDefn().GetFieldDefn(i).GetName()
-            field_value = feature.GetFieldAsString(i)
-            feature_dict[field_name] = field_value
-        # 将属性字典添加到列表
-        features_dict.append(feature_dict)
+        # 初始化属性表数据列表
+        features_dict = []
 
-    # 关闭数据源
-    data.Destroy()
+        # 遍历每个要素
+        for feature in layer:
+            # 创建新字典来保存属性
+            feature_dict = {}
 
-    return features_dict
+            # 获取并保存属性值
+            for i in range(feature.GetFieldCount()):
+                field_name = layer.GetLayerDefn().GetFieldDefn(i).GetName()
+                field_value = feature.GetFieldAsString(i)
+                feature_dict[field_name] = field_value
+            # 将属性字典添加到列表
+            features_dict.append(feature_dict)
+
+        # 关闭数据源
+        data.Destroy()
+
+        return features_dict
 
 def write_dict_to_new_dbf(dbf_path, data_dicts):
     """
@@ -93,7 +125,7 @@ def write_dict_to_new_dbf(dbf_path, data_dicts):
 def VectorTranslate(
         shapeFilePath,
         saveFolderPath,
-        format="GeoJSON",
+        format="ESRI Shapefile",
         accessMode=None,
         dstSrsESPG=4326,
         selectFields=None,
@@ -112,12 +144,9 @@ def VectorTranslate(
     :param dim: 输出矢量文件坐标纬度，通常使用 "XY"
     :return: 输出文件的路径
     """
+    gdal.SetConfigOption("SHAPE_ENCODING", "")
     print("开始转为wgs84坐标系")
 
-    # dbffile = os.path.splitext(shapeFilePath)[0] + '.dbf'
-    # table = dbfread.DBF(dbffile, encoding='gbk')
-    # for record in table:
-    #     print(record)
     if not os.path.exists(saveFolderPath):
         os.makedirs(saveFolderPath)
 
@@ -127,15 +156,16 @@ def VectorTranslate(
 
     # gdal.SetConfigOption("GDAL_FILENAME_IS_UTF8", "YES")
     # gdal.SetConfigOption("SHAPE_ENCODING", "GBK")
-    gdal.SetConfigOption("SHAPE_ENCODING", "")
+
+
+
     data = ogr.Open(shapeFilePath)
     layer = data.GetLayer()
 
     # 手动处理属性字段编码
-    for feature in layer:
-        for i in range(feature.GetFieldCount()):
-            field_value = feature.GetFieldAsString(i)
-            print(field_value)
+    # for feature in layer:
+    #     for i in range(feature.GetFieldCount()):
+    #         field_value = feature.GetFieldAsString(i)
 
     spatial = layer.GetSpatialRef()
     layerName = layer.GetName()
@@ -151,6 +181,9 @@ def VectorTranslate(
         destDataPath = os.path.join(saveFolderPath, destDataName)
     elif format == "ESRI Shapefile":
         destDataName = layerName + "_temp.shp"
+        destDataPath = os.path.join(saveFolderPath, destDataName)
+    elif format == "GPKG":
+        destDataName = layerName + "_temp.GPKG"
         destDataPath = os.path.join(saveFolderPath, destDataName)
     else:
         print("不支持该格式！")
@@ -196,7 +229,7 @@ def transform_coordinate_and_recreate_new_dbf(input_shp, save_folder):
         dim="XY",
     )
     attributes = convert_shapefile_and_extract_attributes(temp_file_1)
-    print("开始转为WGS84坐标系")
+
     print(attributes)
 
     new_dbf_file = os.path.splitext(temp_file_1)[0] + "_new.dbf"
@@ -208,9 +241,11 @@ def transform_coordinate_and_recreate_new_dbf(input_shp, save_folder):
 
     return temp_file_1  # 返回新的shapefile路径
 
-# 示例调用
+
 if __name__ == "__main__":
-    input_shp = r'D:\temp\out\test\Fisheries_20190927.shp'
-    save_folder = r'D:\temp\out\test'
+    input_shp = r'C:\Users\Administrator\Documents\WeChat Files\wxid_ejyl8luu57t121\FileStorage\File\2024-09\Fisheries_20190927\3\aaa.shp'
+    input_shp = r'C:\Users\Administrator\Documents\WeChat Files\wxid_ejyl8luu57t121\FileStorage\File\2024-09\Fisheries_20190927\1\Exp.shp'
+    # input_shp =r'C:\Users\Administrator\Documents\WeChat Files\wxid_ejyl8luu57t121\FileStorage\File\2024-09\Fisheries_20190927\1\Fisheries_20190927.shp'
+    save_folder = r'C:\Users\Administrator\Documents\WeChat Files\wxid_ejyl8luu57t121\FileStorage\File\2024-09\Fisheries_20190927\1'
     transform_coordinate_and_recreate_new_dbf(input_shp, save_folder)
 

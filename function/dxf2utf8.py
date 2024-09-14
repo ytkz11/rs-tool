@@ -41,7 +41,39 @@ def write_dict_to_new_dbf(dbf_path, data_dicts):
             # for field, value in data_dict.items():
             #     record[field] = value  # 设置每个字段的值
             # record.store()  # 存储记录
+import dbfread
 
+def read_dbf(dbf_path, encoding='GBK'):
+    table = dbfread.DBF(dbf_path, encoding=encoding)
+    for record in table:
+        print(record)
+
+# 使用方法
+dbf_file = r'D:\gadm\东德西德\shp\berlin.dbf'
+read_dbf(dbf_file, encoding='GBK')
+import dbfread
+
+def try_encoding(dbf_path, encodings=['GBK', 'GB18030', 'UTF-8']):
+    for encoding in encodings:
+        try:
+            table = dbfread.DBF(dbf_path, encoding=encoding)
+            for record in table:
+                print(f"Encoding: {encoding}")
+                print(record)
+                return encoding
+        except UnicodeDecodeError:
+            continue
+    return None
+
+# 使用方法
+dbf_file = r'C:\Users\Administrator\Documents\WeChat Files\wxid_ejyl8luu57t121\FileStorage\File\2024-09\Fisheries_20190927\1\Fisheries_20190927.dbf'
+dbf_file = r'C:\Users\Administrator\Documents\WeChat Files\wxid_ejyl8luu57t121\FileStorage\File\2024-09\Fisheries_20190927\1\Exp.dbf'
+
+correct_encoding = try_encoding(dbf_file)
+if correct_encoding:
+    print(f"Correct encoding is: {correct_encoding}")
+else:
+    print("No correct encoding found.")
 if __name__ == "__main__":
     dbf_path = r'D:\temp\out\test\Fisheries_20190927113.dbf'
     data_dicts = [
