@@ -24,7 +24,8 @@ class RestoreShp(object):
 
         self.outfile = [os.path.join(self.outpath, os.path.splitext(os.path.basename(self.file))[0] + '_restore.shp'),
                         os.path.join(self.outpath, os.path.splitext(os.path.basename(self.file))[0] + '_restore.dbf'),
-                        os.path.join(self.outpath, os.path.splitext(os.path.basename(self.file))[0] + '_restore.shx')]
+                        os.path.join(self.outpath, os.path.splitext(os.path.basename(self.file))[0] + '_restore.shx'),
+                        os.path.join(self.outpath, os.path.splitext(os.path.basename(self.file))[0] + '_restore.prj')]
         self.copyfile
     @property
     def copyfile(self):
@@ -32,6 +33,11 @@ class RestoreShp(object):
         shutil.copyfile(self.file, self.outfile[0])
         shutil.copyfile(self.dbffile, self.outfile[1])
         shutil.copyfile(os.path.splitext(self.file)[0] + '.shx', self.outfile[2])
+
+        try:
+            shutil.copyfile(os.path.splitext(self.file)[0] + '.prj', self.outfile[3])
+        except Exception as e:
+            print(e)
         print('Copy the initial file to the output directory')
 
     def get_shp_shape_records(self):
@@ -56,7 +62,7 @@ class RestoreShp(object):
         #  Number of records read from dbf file
         table = self.get_dbf_shape_records()
         dbf_numrecords = len(table)
-        titles = dbf.get_fields(self.outfile[1])[0]
+
 
         # Check whether the number of shp and dbf records is equal
         if shp_numrecords != dbf_numrecords:

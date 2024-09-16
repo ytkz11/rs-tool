@@ -93,10 +93,11 @@ def check_is_84(file):
     ds = ogr.Open(file)
     layer = ds.GetLayer()
     spatial_ref = layer.GetSpatialRef()
-
+    if spatial_ref is None:
+        return True
     wkt = spatial_ref.ExportToPrettyWkt()
 
-    if 'WGS_1984' in wkt:
+    if 'WGS_1984' in wkt :
         return True
     else:
         return False
