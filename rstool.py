@@ -15,6 +15,7 @@ from ui.ui_shp2dxf_origin import shp2dxfWidget_origin
 from ui.ui_shp2kml import shp2kmlWidget_origin
 from ui.ui_color_enhance import color_enhanceWidget
 from ui.ui_restoreshp import restore_shpWidget
+from ui.ui_photo_extrat_gps_shp import photo_extrat_gps_shpWidget
 
 from PyQt5.QtCore import Qt, QUrl
 from PyQt5.QtGui import QIcon, QDesktopServices
@@ -46,6 +47,7 @@ class Window(FluentWindow):
         self.tool = Tool()
         self.Color_enhance = color_enhanceWidget('color_enhanceWidget', self)
         self.Restore_shp = restore_shpWidget('restore_shpWidget', self)
+        self.Photo_extrat_gps_shp = photo_extrat_gps_shpWidget('photo_extrat_gps_shpWidget', self)
 
 
         self.Shp2dxf = shp2dxfWidget('shp2dxf_ui', self)
@@ -76,7 +78,12 @@ class Window(FluentWindow):
         self.Shp2dxf_origin.shp2dxf_process_btn.clicked.connect(lambda: self.Shp2dxf_origin_layering_thread(self.Shp2dxf_origin.process))
         self.Shp2kml.shp2kml_process_btn.clicked.connect(lambda: self.Shp2kml_thread(self.Shp2kml.process))
         self.Restore_shp.restoreshp_process_btn.clicked.connect(lambda: self.restore_shp_thread(self.Restore_shp.process))
+        self.Photo_extrat_gps_shp.photo_to_gps_shp_process_btn.clicked.connect(lambda: self.Photo_extrat_gps_shp_thread(self.Photo_extrat_gps_shp.process))
 
+    def Photo_extrat_gps_shp_thread(self,widget):
+        self.worker = Worker(widget)
+        self.worker.finished.connect(self.showFlyout)
+        self.worker.start()  # 启动任务
     def restore_shp_thread(self,widget):
         self.worker = Worker(widget)
         self.worker.finished.connect(self.showFlyout)
@@ -121,6 +128,8 @@ class Window(FluentWindow):
         self.addSubInterface(self.Shp2dxf, FIF.PIE_SINGLE, 'shp to dxf 按字段保存为多个DXF文件',parent=self.vectorInterface)
         self.addSubInterface(self.Shp2kml, FIF.PIN, 'shp to kml',parent=self.vectorInterface)
         self.addSubInterface(self.Restore_shp, FIF.UPDATE, 'shp修复', parent=self.vectorInterface)
+        self.addSubInterface(self.Photo_extrat_gps_shp, FIF.UPDATE, '照片提取GPS', parent=self.vectorInterface)
+
         self.addSubInterface(
             self.Document, FIF.DOCUMENT, self.tr('简介'), NavigationItemPosition.BOTTOM)
 
@@ -131,6 +140,7 @@ class Window(FluentWindow):
         self.tool.prompt(self.Shp2dxf_origin.shp2dxf_origin_prompt, Content.SHP2DXF_ORIGIN_TITLE.value, Content.SHP2DXF_ORIGIN_CONTENT.value)
         self.tool.prompt(self.Shp2kml.shp2kml_prompt, Content.SHP2KML_TITLE.value, Content.SHP2KML_CONTENT.value)
         self.tool.prompt(self.Restore_shp.restoreshp_prompt, Content.RESTORESHP_TITLE.value, Content.RESTORESHP_CONTENT.value)
+        self.tool.prompt(self.Photo_extrat_gps_shp.photo_to_gps_shp_prompt, Content.PHOTOGPS_TITLE.value, Content.PHOTOGPS_CONTENT.value)
 
     def init_window(self):
         self.resize(1100, 800)

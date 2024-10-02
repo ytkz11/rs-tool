@@ -30,3 +30,9 @@ class Content(Enum):
     RESTORESHP_CONTENT = """
                         📢 输出文件保存在输入文件相同的文件夹的out文件夹下
                         """
+    PHOTOGPS_TITLE = "📣读取照片的地理信息，并保存为shp"
+    PHOTOGPS_CONTENT = """
+                        📢 照片必须为原图
+                        📢 输出文件保存在输入文件夹下
+                        📢 输出文件为shp格式
+                        """
