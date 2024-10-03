@@ -58,7 +58,7 @@ class photo_extrat_gps_shpWidget(QFrame, Ui_Form):
         else:
             jpg_list = get_file_name(self.tool.path, ['.JPG', '.jpg'])
             if len(jpg_list) >0:
-                self.tool.show_message("文件夹下存在照片")
+                # self.tool.show_message("文件夹下存在照片")
 
                 self.photo_to_gps_shp_process_btn.setEnabled(True)
 
