@@ -36,3 +36,9 @@ class Content(Enum):
                         📢 输出文件保存在输入文件夹下
                         📢 输出文件为shp格式
                         """
+    SHPSPLIT_TITLE = "📣输入单个shp文件，按字段保存为新的shp"
+    SHPSPLIT_CONTENT = """
+                        📢 输出文件夹为 输入文件夹下的名字叫做out文件夹
+                        📢 out文件夹不需要提前建立
+                        📢 输出文件名字与你选择的字段保持一致
+                        """
