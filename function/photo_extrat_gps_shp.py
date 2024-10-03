@@ -1,3 +1,4 @@
+# 从照片提取gps信息，然后保存为shp
 import glob
 import os
 try:
