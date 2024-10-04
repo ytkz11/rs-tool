@@ -93,11 +93,13 @@ def photo_extract_gps_info_to_shp(photos,photo_dir):
 
     with open('photos.txt', 'w') as f:
         for _, coords in photos.items():
-            f.write(coords)
+            f.write(str(coords[0]))
+            f.write(' ')
+            f.write(str(coords[1]))
             f.write('\n')
 
 if __name__ == '__main__':
    # 存储照片文件名和GPS坐标的字典
    photos = {}
-   photo_dir = ".\photos"
+   photo_dir = r".\photos"
    photo_extract_gps_info_to_shp(photos,photo_dir)
