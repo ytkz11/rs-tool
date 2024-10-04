@@ -147,7 +147,7 @@ class Window(FluentWindow):
         self.tool.prompt(self.Color_enhance.colorenhance_prompt, Content.ColorEnhancement_TITLE.value, Content.ColorEnhancement_CONTENT.value)
         self.tool.prompt(self.Shp2dxf.shp2dxf_prompt, Content.SHP2DXF_TITLE.value, Content.SHP2DXF_CONTENT.value)
         self.tool.prompt(self.Shp2dxf_origin.shp2dxf_origin_prompt, Content.SHP2DXF_ORIGIN_TITLE.value, Content.SHP2DXF_ORIGIN_CONTENT.value)
-        self.tool.prompt(self.Shpsplit.shpsplit_prompt, Content.SHPSPLIT_TITLE.value, Content.SHPSPLIT_CONTENT.value)
+        # self.tool.prompt(self.Shpsplit.shpsplit_prompt, Content.SHPSPLIT_TITLE.value, Content.SHPSPLIT_CONTENT.value)
 
         self.tool.prompt(self.Shp2kml.shp2kml_prompt, Content.SHP2KML_TITLE.value, Content.SHP2KML_CONTENT.value)
         self.tool.prompt(self.Restore_shp.restoreshp_prompt, Content.RESTORESHP_TITLE.value, Content.RESTORESHP_CONTENT.value)
@@ -168,4 +168,5 @@ if __name__ == '__main__':
     window = Window()
     window.show()
     app.exec_()
+    # pyinstaller -F -w -i D:\code\rstool\resources\images\icon.ico rstool.py
     # pyinstaller -F -w -i G:\code\rstool\resources\images\icon.ico rstool.py

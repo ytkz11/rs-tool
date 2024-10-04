@@ -44,7 +44,7 @@ class photo_extrat_gps_shpWidget(QFrame, Ui_Form):
         self.photo_to_gps_shp_process_btn.setEnabled(False)
     def signals(self):
         """按钮触发， 主动调用"""
-        self.photo_to_gps_shp_filepath_btn.clicked.connect(lambda: self.tool.handle_path(self.restoreshp_filepath_line))
+        self.photo_to_gps_shp_filepath_btn.clicked.connect(lambda: self.tool.get_full_path(self.photo_to_gps_shp_filepath_line))
         self.photo_to_gps_shp_filepath_line.textChanged.connect(self.suffix_info)
 
     def suffix_info(self):
