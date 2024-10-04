@@ -97,6 +97,11 @@ def photo_extract_gps_info_to_shp(photos,photo_dir):
             f.write(' ')
             f.write(str(coords[1]))
             f.write('\n')
+    with open('photos.proj', 'w') as f:
+        f.write(    """
+    GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]]
+    """)
+
 
 if __name__ == '__main__':
    # 存储照片文件名和GPS坐标的字典
