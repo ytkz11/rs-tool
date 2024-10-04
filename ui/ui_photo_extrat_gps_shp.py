@@ -76,5 +76,4 @@ class photo_extrat_gps_shpWidget(QFrame, Ui_Form):
             photo_extract_gps_info_to_shp(photos, self.tool.path)
 
             self.photo_to_gps_shp_process_btn.setEnabled(True)
-            self.photo_to_gps_shp_process_btn.setText('开始')
-
+            self.photo_to_gps_shp_process_btn.setText('完成GPS信息提取')

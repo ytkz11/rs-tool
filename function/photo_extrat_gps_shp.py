@@ -90,6 +90,12 @@ def photo_extract_gps_info_to_shp(photos,photo_dir):
         for f, coords in photos.items():
             w.point(*coords)  # 使用经度和纬度（注意顺序）创建一个点要素
             w.record(f)  # 为点要素添加文件名属性
+
+    with open('photos.txt', 'w') as f:
+        for _, coords in photos.items():
+            f.write(coords)
+            f.write('\n')
+
 if __name__ == '__main__':
    # 存储照片文件名和GPS坐标的字典
    photos = {}
