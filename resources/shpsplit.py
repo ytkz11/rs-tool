@@ -744,7 +744,7 @@ class Ui_Form(object):
         self.shpsplit_prompt.setText(_translate("Form", "用前必看(请点击)"))
         self.shpsplit_filepath_btn.setText(_translate("Form", "获取路径"))
         self.shpsplit_header_box.setText(_translate("Form", "shp文件的字段"))
-        self.shpsplit_header2_box.setText(_translate("Form", "要保存的字段"))
+        self.shpsplit_header2_box.setText(_translate("Form", "要保存的记录值"))
 
         self.process_btn.setText(_translate("Form", "开始转换"))
 from qfluentwidgets import CardWidget, ComboBox, LineEdit, PrimaryPushButton, PushButton, TitleLabel

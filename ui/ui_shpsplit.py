@@ -7,7 +7,7 @@ import os
 from PyQt5.QtWidgets import QFrame
 from PyQt5.QtCore import pyqtSignal
 from function.tools import Tool
-from function.shp2dxf_ezdxf_padding import Shp2DxfPadding
+from function.split_shp import Shp_split
 from resources.shpsplit import Ui_Form
 
 class shpsplitWidget(QFrame, Ui_Form):
@@ -46,12 +46,25 @@ class shpsplitWidget(QFrame, Ui_Form):
         if self.tool.path:
             self.header_box_clear()
             if self.tool.suffix == ".shp":
-
-                field_list = Shp2DxfPadding(self.tool.path).field
+                Shpsplit = Shp_split(self.tool.path)
+                field_list = Shpsplit.field
                 self.shpsplit_header_box.addItems(field_list)
+                value_lsit = Shpsplit.get_unique_values(self.shpsplit_header_box.text())
+                self.shpsplit_header2_box.addItems(value_lsit)
                 self.process_btn.setEnabled(True)
+            self.shpsplit_header_box.currentTextChanged.connect(self.on_combobox_changed)
         else:
             self.header_box_clear()
+    def on_combobox_changed(self):
+                self.shpsplit_header2_box.clear()
+                Shpsplit = Shp_split(self.tool.path)
+                value_lsit = Shpsplit.get_unique_values(self.shpsplit_header_box.text())
+                self.shpsplit_header2_box.addItems(value_lsit)
+                self.process_btn.setEnabled(True)
+
+
+
+
     def header_box_clear(self):
         """检查并清除header_combox"""
         if self.shpsplit_header_box.count() > 0:
@@ -68,7 +81,8 @@ class shpsplitWidget(QFrame, Ui_Form):
             if self.tool.suffix == ".shp":
                 if os.path.exists(self.tool.path):
                     self.progressBar.start()
-                    Shp2DxfPadding(self.tool.path).shp2dxf(self.shp2dxf_header_box.text())
+                    Shp_split(self.tool.path).split_by_field(self.shpsplit_header_box.text(),self.shpsplit_header2_box.text())
+
                     self.progressBar.stop()
                 else:
                     self.shpsplit_header_box.setText("输入的文件不存在，请输入正确的shp文件路径")
