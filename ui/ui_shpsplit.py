@@ -38,6 +38,8 @@ class shpsplitWidget(QFrame, Ui_Form):
             self.read_file()
         else:
             self.shpsplit_header_box.setText("输入的文件不存在，请输入正确的shp文件路径")
+            self.shpsplit_header_box.clear()
+            self.shpsplit_header2_box.clear()
 
 
     def read_file(self):
@@ -58,8 +60,9 @@ class shpsplitWidget(QFrame, Ui_Form):
     def on_combobox_changed(self):
                 self.shpsplit_header2_box.clear()
                 Shpsplit = Shp_split(self.tool.path)
-                value_lsit = Shpsplit.get_unique_values(self.shpsplit_header_box.text())
-                self.shpsplit_header2_box.addItems(value_lsit)
+                value_list = Shpsplit.get_unique_values(self.shpsplit_header_box.text())
+                value_list.insert(0,"all")
+                self.shpsplit_header2_box.addItems(value_list)
                 self.process_btn.setEnabled(True)
 
 
@@ -80,13 +83,21 @@ class shpsplitWidget(QFrame, Ui_Form):
             # self.header_box_clear()
             if self.tool.suffix == ".shp":
                 if os.path.exists(self.tool.path):
-                    self.progressBar.start()
-                    Shp_split(self.tool.path).split_by_field(self.shpsplit_header_box.text(),self.shpsplit_header2_box.text())
+                    if self.shpsplit_header2_box.text() != "all":
+                        self.progressBar.start()
+                        Shp_split(self.tool.path).split_by_field(self.shpsplit_header_box.text(),self.shpsplit_header2_box.text())
 
-                    self.progressBar.stop()
+                        self.progressBar.stop()
+                    else:
+                        self.progressBar.start()
+                        Shp_split(self.tool.path).split_by_all_field(self.shpsplit_header_box.text())
+
+                        self.progressBar.stop()
                 else:
                     self.shpsplit_header_box.setText("输入的文件不存在，请输入正确的shp文件路径")
                     self.tool.show_error(self, "❗️文件错误", "文件不存在")
+                    self.shpsplit_header_box.clear()
+                    self.shpsplit_header2_box.clear()
 
 
 

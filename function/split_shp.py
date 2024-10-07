@@ -8,21 +8,23 @@ class Shp_split:
         self.driver = ogr.GetDriverByName('ESRI Shapefile')
         self.datasource = self.driver.Open(filename, 0)  # 0 means read-only
         self.get_field_name()
-        self.layer = self.datasource.GetLayer()
+        if self.datasource:
+            self.layer = self.datasource.GetLayer()
     def get_field_name(self):
         ds = self.datasource
-        layer = ds.GetLayer()
-        layer_defn = layer.GetLayerDefn()
-        field_contents = []
-        # 遍历所有的字段
-        for i in range(layer_defn.GetFieldCount()):
-            fieldDefn = layer_defn.GetFieldDefn(i)
-            field_contents.append(fieldDefn.GetName())
-        self.field = field_contents
-        # 关闭数据源
-        ds = None
+        if ds:
+            layer = ds.GetLayer()
+            layer_defn = layer.GetLayerDefn()
+            field_contents = []
+            # 遍历所有的字段
+            for i in range(layer_defn.GetFieldCount()):
+                fieldDefn = layer_defn.GetFieldDefn(i)
+                field_contents.append(fieldDefn.GetName())
+            self.field = field_contents
+            # 关闭数据源
+            ds = None
 
-        self.field_contents = field_contents
+            self.field_contents = field_contents
     def get_unique_values(self, field_name):
 
         # 获取字段定义
@@ -56,7 +58,7 @@ class Shp_split:
             if layer is None:
                 print(f'No layer found in {self.filename}')
                 return
-
+            value = value.replace('/', '')
             output_shp_file = os.path.splitext(os.path.basename(self.filename))[0] +'_'+ field_name + '_' +value +'.shp'
             outpath = os.path.join(os.path.dirname(os.path.abspath(self.filename)), "out")
             os.makedirs(outpath, exist_ok=True)
@@ -91,6 +93,10 @@ class Shp_split:
             # 关闭数据源
             data_source = None
             out_data_source = None
+    def split_by_all_field(self, field_name):
+        value_list = self.get_unique_values(field_name)
+        for i in range(len(value_list)):
+            self.split_by_field(field_name, value_list[i])
 
 if __name__ == '__main__':
     file_path = r'D:\code\arcgis-online-download\utils\layers\services7.arcgis.com\iEMmryaM5E3wkdnU\China_Provinces_1389.shp'
