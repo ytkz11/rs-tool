@@ -132,10 +132,8 @@ class Document_Form(object):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
         self.TitleLabel.setText(_translate("Form", "简介"))
-        self.BodyLabel_3.setText(_translate("Form", "<html><head/><body><p><span style=\" font-size:12pt; font-weight:700;\">此工具已定版为0.0.3</span>"
-                                                     "</p><p>遥感影像色彩增强 </p>"
-                                                    "</p><p>shp 转为 dxf </p><p>"
-                                                    "</p><p>shp 转为 kml </p><p>"
+        self.BodyLabel_3.setText(_translate("Form", "<html><head/><body><p><span style=\" font-size:12pt; font-weight:700;\">此工具已定版为0.0.7</span>"
+                               
                                                    
                                                     "<p><br/></p></body></html>"))
         self.StrongBodyLabel.setText(_translate("Form", "开发者： YTKZ  "))

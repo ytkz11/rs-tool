@@ -1,5 +1,4 @@
 import os.path
-
 from osgeo import ogr
 
 ogr.UseExceptions()  # 启用异常处理

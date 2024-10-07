@@ -74,13 +74,16 @@ def gps(exif):
 
 def photo_extract_gps_info_to_shp(photos,photo_dir):
     # 查找指定目录下的所有JPG照片
-    files = glob.glob(os.path.join(photo_dir, "*.jpg"))
-
+    # files = glob.glob(os.path.join(photo_dir, "*.jpg"))
+    files = glob.glob(os.path.join(photo_dir, "*.jpg;*.JPG;*.png;*.PNG"))
     # 从文件中提取GPS元数据
     for f in files:
-        e = exif(f)
-        lat, lon = gps(e)
-        photos[f] = [lon, lat]  # 注意：这里通常经度在前，纬度在后，但此处按照您的代码保持原样
+        try:
+            e = exif(f)
+            lat, lon = gps(e)
+            photos[f] = [lon, lat]  # 注意：这里通常经度在前，纬度在后，但此处按照您的代码保持原样
+        except Exception as e:
+            print(e)
 
     # 构建一个包含照片文件名作为属性的点shapefile
     os.chdir(photo_dir)
