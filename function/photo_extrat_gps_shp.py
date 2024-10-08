@@ -112,6 +112,7 @@ def photo_extract_gps_info_to_shp(photos,photo_dir):
     """)
 
 
+
 if __name__ == '__main__':
    # 存储照片文件名和GPS坐标的字典
    photos = {}
