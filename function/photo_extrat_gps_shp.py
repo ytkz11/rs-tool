@@ -75,13 +75,19 @@ def gps(exif):
 def photo_extract_gps_info_to_shp(photos,photo_dir):
     # 查找指定目录下的所有JPG照片
     # files = glob.glob(os.path.join(photo_dir, "*.jpg"))
-    files = glob.glob(os.path.join(photo_dir, "*.jpg;*.JPG;*.png;*.PNG"))
+    jpgfiles = glob.glob(os.path.join(photo_dir, "*.jpg"))
+    pngfiles = glob.glob(os.path.join(photo_dir, "*.png"))
+
+    files = jpgfiles + pngfiles
     # 从文件中提取GPS元数据
     for f in files:
         try:
             e = exif(f)
             lat, lon = gps(e)
-            photos[f] = [lon, lat]  # 注意：这里通常经度在前，纬度在后，但此处按照您的代码保持原样
+            if lat is None or lon is None:
+                continue
+            else:
+                photos[f] = [lon, lat]  # 注意：这里通常经度在前，纬度在后
         except Exception as e:
             print(e)
 
@@ -96,6 +102,7 @@ def photo_extract_gps_info_to_shp(photos,photo_dir):
 
     with open('photos.txt', 'w') as f:
         for _, coords in photos.items():
+            print(coords[0])
             f.write(str(coords[0]))
             f.write(' ')
             f.write(str(coords[1]))
@@ -108,5 +115,5 @@ def photo_extract_gps_info_to_shp(photos,photo_dir):
 if __name__ == '__main__':
    # 存储照片文件名和GPS坐标的字典
    photos = {}
-   photo_dir = r".\photos"
+   photo_dir = r"D:\无人机"
    photo_extract_gps_info_to_shp(photos,photo_dir)
