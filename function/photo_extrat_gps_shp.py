@@ -79,6 +79,7 @@ def photo_extract_gps_info_to_shp(photos,photo_dir):
     pngfiles = glob.glob(os.path.join(photo_dir, "*.png"))
 
     files = jpgfiles + pngfiles
+    exis_gps_file_list = []
     # 从文件中提取GPS元数据
     for f in files:
         try:
@@ -88,6 +89,7 @@ def photo_extract_gps_info_to_shp(photos,photo_dir):
                 continue
             else:
                 photos[f] = [lon, lat]  # 注意：这里通常经度在前，纬度在后
+                exis_gps_file_list.append(f)
         except Exception as e:
             print(e)
 
@@ -95,18 +97,26 @@ def photo_extract_gps_info_to_shp(photos,photo_dir):
     os.chdir(photo_dir)
     with shapefile.Writer("photos", shapefile.POINT) as w:
         w.field("NAME", "C", 80)  # 创建一个名为NAME的字符型字段，最大长度为80
+        w.field("LON", "C", 80)
+        w.field("LAT", "C", 80)
 
         for f, coords in photos.items():
             w.point(*coords)  # 使用经度和纬度（注意顺序）创建一个点要素
-            w.record(f)  # 为点要素添加文件名属性
+            # 为点要素添加文件名属性
+            w.record(f, coords[0], coords[1])  # 为点要素添加文件名属性
+
 
     with open('photos.txt', 'w') as f:
+        i = 0
         for _, coords in photos.items():
             print(coords[0])
+            f.write(exis_gps_file_list[i])
+            f.write(' ')
             f.write(str(coords[0]))
             f.write(' ')
             f.write(str(coords[1]))
             f.write('\n')
+            i+=1
     with open('photos.prj', 'w') as f:
         f.write("""GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]]
     """)
