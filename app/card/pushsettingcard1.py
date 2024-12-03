@@ -1,0 +1,210 @@
+from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtGui import QIcon, QKeyEvent
+from PyQt5.QtWidgets import QPushButton
+from qfluentwidgets import SettingCard, FluentIconBase, InfoBar, InfoBarPosition
+from .messagebox_custom import MessageBoxEdit, MessageBoxEditMultiple, MessageBoxDate, MessageBoxInstance, MessageBoxNotifyTemplate, MessageBoxTeam, MessageBoxFriends
+from tasks.base.tasks import start_task
+from module.config import cfg
+from typing import Union
+import datetime
+import json
+import re
+
+
+class PushSettingCard(SettingCard):
+    clicked = pyqtSignal()
+
+    def __init__(self, text, icon: Union[str, QIcon, FluentIconBase], title, configname, configvalue, parent=None):
+        super().__init__(icon, title, configvalue, parent)
+        self.title = title
+        self.configname = configname
+        self.button = QPushButton(text, self)
+        self.hBoxLayout.addWidget(self.button, 0, Qt.AlignRight)
+        self.hBoxLayout.addSpacing(16)
+
+
+class PushSettingCardStr(PushSettingCard):
+    def __init__(self, text, icon: Union[str, QIcon, FluentIconBase], title, configname, parent=None):
+        self.configvalue = str(cfg.get_value(configname))
+        super().__init__(text, icon, title, configname, self.configvalue, parent)
+        self.button.clicked.connect(self.__onclicked)
+
+    def __onclicked(self):
+        message_box = MessageBoxEdit(self.title, self.configvalue, self.window())
+        if message_box.exec():
+            cfg.set_value(self.configname, message_box.getText())
+            self.contentLabel.setText(message_box.getText())
+
+
+class PushSettingCardCode(PushSettingCard):
+    def __init__(self, text, icon: Union[str, QIcon, FluentIconBase], title, configname, parent=None):
+        self.configvalue = '\n'.join(cfg.get_value(configname))
+        self.parent = parent
+        super().__init__(text, icon, title, configname, "批量使用兑换码，每行一个，自动过滤空格等无效字符", parent)
+        self.button.clicked.connect(self.__onclicked)
+
+    def __onclicked(self):
+        message_box = MessageBoxEditMultiple(self.title, self.configvalue, self.window())
+        if message_box.exec():
+            text = message_box.getText()
+            code = [line.strip() for line in [''.join(re.findall(r'[A-Za-z0-9]', line)) for line in text.split('\n')] if line.strip()]
+            # code = [''.join(re.findall(r'[A-Za-z0-9]', line.strip())) for line in text.split('\n') if line.strip()]
+            cfg.set_value(self.configname, code)
+            self.configvalue = '\n'.join(code)
+            if code != []:
+                start_task("redemption")
+            else:
+                InfoBar.warning(
+                    self.tr('兑换码为空'),
+                    self.tr(''),
+                    orient=Qt.Horizontal,
+                    isClosable=True,
+                    position=InfoBarPosition.TOP,
+                    duration=1000,
+                    parent=self.parent
+                )
+
+
+class PushSettingCardEval(PushSettingCard):
+    def __init__(self, text, icon: Union[str, QIcon, FluentIconBase], title, configname, parent=None):
+        self.configvalue = str(cfg.get_value(configname))
+        super().__init__(text, icon, title, configname, self.configvalue, parent)
+        self.button.clicked.connect(self.__onclicked)
+
+    def __onclicked(self):
+        message_box = MessageBoxEdit(self.title, self.configvalue, self.window())
+        if message_box.exec():
+            cfg.set_value(self.configname, eval(message_box.getText()))
+            self.contentLabel.setText(message_box.getText())
+
+
+class PushSettingCardDate(PushSettingCard):
+    def __init__(self, text, icon: Union[str, QIcon, FluentIconBase], title, configname, parent=None):
+        self.configvalue = datetime.datetime.fromtimestamp(cfg.get_value(configname))
+        super().__init__(text, icon, title, configname, self.configvalue.strftime('%Y-%m-%d %H:%M'), parent)
+        self.button.clicked.connect(self.__onclicked)
+
+    def __onclicked(self):
+        message_box = MessageBoxDate(self.title, self.configvalue, self.window())
+        if message_box.exec():
+            time = message_box.getDateTime()
+            cfg.set_value(self.configname, time.timestamp())
+            self.contentLabel.setText(time.strftime('%Y-%m-%d %H:%M'))
+
+
+class PushSettingCardKey(PushSettingCard):
+    def __init__(self, text, icon: Union[str, QIcon, FluentIconBase], title, configname, parent=None):
+        self.configvalue = str(cfg.get_value(configname))
+        super().__init__(text, icon, title, configname, self.configvalue, parent)
+        self.button.pressed.connect(self.__onpressed)
+        self.button.released.connect(self.__onreleased)
+
+    def __onpressed(self):
+        self.button.setText("按下要绑定的按键")
+
+    def __onreleased(self):
+        self.button.setText("按住以修改")
+
+    def keyPressEvent(self, e: QKeyEvent):
+        if (self.button.isDown()):
+            cfg.set_value(self.configname, e.text())
+            self.contentLabel.setText(e.text())
+            self.button.setText(f"已改为 {e.text()}")
+
+
+class PushSettingCardInstance(PushSettingCard):
+    def __init__(self, text, icon: Union[str, QIcon, FluentIconBase], title, configname, configtemplate, parent=None):
+        self.configtemplate = configtemplate
+        self.configvalue = cfg.get_value(configname)
+        super().__init__(text, icon, title, configname, str(self.configvalue), parent)
+        self.button.clicked.connect(self.__onclicked)
+
+    def __onclicked(self):
+        message_box = MessageBoxInstance(self.title, self.configvalue, self.configtemplate, self.window())
+        if message_box.exec():
+            for type, combobox in message_box.comboBox_dict.items():
+                self.configvalue[type] = combobox.text().split('（')[0]
+            cfg.set_value(self.configname, self.configvalue)
+            self.contentLabel.setText(str(self.configvalue))
+
+
+class PushSettingCardNotifyTemplate(PushSettingCard):
+    def __init__(self, text, icon: Union[str, QIcon, FluentIconBase], title, configname, parent=None):
+        self.configvalue = cfg.get_value(configname)
+        super().__init__(text, icon, title, configname, "", parent)
+        self.button.clicked.connect(self.__onclicked)
+
+    def __onclicked(self):
+        message_box = MessageBoxNotifyTemplate(self.title, self.configvalue, self.window())
+        if message_box.exec():
+            for id, lineedit in message_box.lineEdit_dict.items():
+                self.configvalue[id] = lineedit.text().replace(r"\n", "\n")
+            cfg.set_value(self.configname, self.configvalue)
+
+
+class PushSettingCardTeam(PushSettingCard):
+    def __init__(self, text, icon: Union[str, QIcon, FluentIconBase], title, configname, parent=None):
+        with open("./assets/config/character_names.json", 'r', encoding='utf-8') as file:
+            self.template = json.load(file)
+        self.configvalue = cfg.get_value(configname)
+        super().__init__(text, icon, title, configname, self.translate_to_chinese(self.configvalue), parent)
+        self.button.clicked.connect(self.__onclicked)
+
+    def translate_to_chinese(self, configvalue):
+        text = str(configvalue)
+        for key, value in self.template.items():
+            text = text.replace(key, value)
+        return text
+
+    def __onclicked(self):
+        def get_key(val, map):
+            for key, value in map.items():
+                if value == val:
+                    return key
+            return None
+
+        message_box = MessageBoxTeam(self.title, self.configvalue, self.template, self.window())
+        if message_box.exec():
+            self.newConfigValue = []
+            for comboboxs in message_box.comboBox_list:
+                char = get_key(comboboxs[0].text(), message_box.template)
+                tech = get_key(comboboxs[1].text(), message_box.tech_map)
+                self.newConfigValue.append([char, tech])
+            self.configvalue = self.newConfigValue
+            cfg.set_value(self.configname, self.newConfigValue)
+            self.contentLabel.setText(self.translate_to_chinese(self.newConfigValue))
+
+
+class PushSettingCardFriends(PushSettingCard):
+    def __init__(self, text, icon: Union[str, QIcon, FluentIconBase], title, configname, parent=None):
+        with open("./assets/config/character_names.json", 'r', encoding='utf-8') as file:
+            self.template = json.load(file)
+            self.template = {'None': '无', **self.template}
+        self.configvalue = cfg.get_value(configname)
+        super().__init__(text, icon, title, configname, self.translate_to_chinese(self.configvalue), parent)
+        self.button.clicked.connect(self.__onclicked)
+
+    def translate_to_chinese(self, configvalue):
+        text = str(configvalue)
+        for key, value in self.template.items():
+            text = text.replace(key, value)
+        return text
+
+    def __onclicked(self):
+        def get_key(val, map):
+            for key, value in map.items():
+                if value == val:
+                    return key
+            return None
+
+        message_box = MessageBoxFriends(self.title, self.configvalue, self.template, self.window())
+        if message_box.exec():
+            self.newConfigValue = []
+            for comboboxs in message_box.comboBox_list:
+                char = get_key(comboboxs[0].text(), message_box.template)
+                # tech = get_key(comboboxs[1].text(), message_box.tech_map)
+                name = comboboxs[1].text()
+                self.newConfigValue.append([char, name])
+            self.configvalue = self.newConfigValue
+            cfg.set_value(self.configname, self.newConfigValue)
+            self.contentLabel.setText(self.translate_to_chinese(self.newConfigValue))

@@ -23,9 +23,10 @@ from PyQt5.QtGui import QIcon, QDesktopServices
 from PyQt5.QtWidgets import QApplication, QFrame, QHBoxLayout
 from qfluentwidgets import (NavigationItemPosition, MessageBox, setTheme, Theme, SplitFluentWindow,
                             NavigationAvatarWidget, qrouter, SubtitleLabel, setFont)
-
-
 from qfluentwidgets import FluentIcon as FIF
+
+from app.home_interface import HomeInterface
+
 class Widget(QFrame):
 
     def __init__(self, text: str, parent=None):
@@ -56,22 +57,23 @@ class Window(FluentWindow):
         self.Shpsplit =shpsplitWidget('shpsplit_ui', self)
         self.Shp2kml = shp2kmlWidget_origin('shp2kml_ui', self)
 
-        self.Document = DocumentWidget("document_ui", self)
-        self.homeInterface = Widget('Home Interface', self)
-        self.gridInterface = Widget('栅格页面，未完成，添加1个功能', self)
-        self.vectorInterface = Widget('矢量页面，未完成，添加3个功能', self)
-        self.droneInterface = Widget('无人机处理专题页面，未完成，未添加功能，待完善', self)
+
+        # self.droneInterface = Widget('无人机处理专题页面，未完成，未添加功能，待完善', self)
 
 
         """初始化界面"""
+
+        self.initInterface()
         self.success_fired = False
         self.warn_fired = False
         self.error_fired = False
         self.init_navigation()
-        # self.add_loading_ui()
+
         self.click_prompt_signal()
         self.window_signals()
         self.init_window()
+
+
 
     def window_signals(self):
         """信号出发子线程启动"""
@@ -122,13 +124,18 @@ class Window(FluentWindow):
     def showFlyout(self):
         # 结束时弹窗
         Flyout.make(CustomFlyoutView(), self.Shp2dxf.process_btn, self, aniType=FlyoutAnimationType.DROP_DOWN)
-
+    def initInterface(self):
+        self.homeInterface = HomeInterface(self)
+        self.Document = DocumentWidget("document_ui", self)
+        # self.homeInterface = Widget('Home Interface', self)
+        self.gridInterface = Widget('栅格页面，未完成，添加1个功能', self)
+        self.vectorInterface = Widget('矢量页面，未完成，添加3个功能', self)
     def init_navigation(self):
         """添加UI"""
-
+        self.addSubInterface(self.homeInterface, FIF.HOME, self.tr('主页'))
         self.addSubInterface(self.gridInterface, FIF.VIDEO, '栅格', NavigationItemPosition.SCROLL)
         self.addSubInterface(self.vectorInterface, FIF.TILES, '矢量', NavigationItemPosition.SCROLL)
-        self.addSubInterface(self.droneInterface, FIF.ALBUM, '无人机', NavigationItemPosition.SCROLL)
+        # self.addSubInterface(self.droneInterface, FIF.ALBUM, '无人机', NavigationItemPosition.SCROLL)
         self.addSubInterface(self.Color_enhance, FIF.LEAF, '植被色彩增强', parent=self.gridInterface)
 
         self.addSubInterface(self.Shp2dxf_origin, FIF.APPLICATION, 'shp to dxf 保存全部字段', parent=self.vectorInterface)
@@ -156,7 +163,7 @@ class Window(FluentWindow):
     def init_window(self):
         self.resize(1100, 800)
         self.setWindowIcon(QIcon(':/icons/images/icon.ico'))
-        self.setWindowTitle('遥感数据处理工具')
+        self.setWindowTitle('遥感处理工具')
 
         desktop = QApplication.desktop().availableGeometry()
         w, h = desktop.width(), desktop.height()
@@ -168,5 +175,7 @@ if __name__ == '__main__':
     window = Window()
     window.show()
     app.exec_()
+
+
     # pyinstaller -F -w -i D:\code\rstool\resources\images\icon.ico rstool.py
     # pyinstaller -F -w -i G:\code\rstool\resources\images\icon.ico rstool.py

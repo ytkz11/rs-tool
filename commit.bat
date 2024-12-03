@@ -46,14 +46,9 @@ if %errorlevel% neq 0 (
 )
 
 echo Committing changes...
-git commit -m "Fix some bug"
-if %errorlevel% neq 0 (
-    echo Error: Failed to commit changes.
-    exit /b 1
-)
 
-echo Pushing changes...
-git push
+set mytimestamp=%date:~0,4%-%date:~5,2%-%date:~8,2% %time:~0,2%:%time:~3,2%
+git commit -m"Auto-committed on %mytimestamp%"&&git push origin master
 if %errorlevel% neq 0 (
     echo Error: Failed to push changes.
     exit /b 1

@@ -1,0 +1,406 @@
+# 语言设置
+locales: zh_CN
+
+# 日志设置
+log_level: INFO # 日志等级，可选值：INFO, DEBUG。INFO 仅记录重要信息，DEBUG 记录详细调试信息。
+
+# 更新检查
+check_update: true # 是否检查更新。true 检查，false 不检查。
+
+# 任务完成后操作
+after_finish: None # 任务完成后的操作，可选值："None"（无操作）, "Exit"（退出程序）, "Loop"（循环执行）, "Shutdown"（关机）, "Sleep"（睡眠）, "Hibernate"（休眠）, "Restart"（重启）, "Logoff"（注销）。
+
+# 循环运行所需开拓力
+power_limit: 160 # 设置循环运行模式时所需的最低开拓力。
+
+# 任务完成后是否播放提示音
+play_audio: false # true 播放，false 不播放。
+
+# Python 解释器路径
+python_exe_path: "" # 设置 Python 解释器路径，示例："C:\Users\i\AppData\Local\Programs\Python\Python311\python.exe"。
+
+# pypi 镜像列表
+pypi_mirror_urls:
+  - https://mirrors.cloud.tencent.com/pypi/simple/
+  - https://mirrors.aliyun.com/pypi/simple/
+  - https://pypi.org/simple/ # 设置 PyPI 镜像列表，用于加速 Python 包的下载。
+
+# 游戏设置
+game_title_name: 崩坏：星穹铁道 # 游戏窗口标题。
+game_process_name: StarRail # 游戏进程名。
+game_path: C:\Program Files\Star Rail\Game\StarRail.exe # 游戏安装路径。
+
+# 副本设置
+instance_type: 拟造花萼（金） # 设置副本类型，可选值：拟造花萼（金）、拟造花萼（赤）、凝滞虚影、侵蚀隧洞、饰品提取。
+calyx_golden_preference: Jarilo-VI # 设置拟造花萼（金）偏好地区，可选值："雅利洛-VI"（Jarilo-VI）、仙舟「罗浮」（XianzhouLuofu）、匹诺康尼（Penacony）。
+instance_names:
+  拟造花萼（金）: 回忆之蕾
+  拟造花萼（赤）: 收容舱段
+  凝滞虚影: 无
+  侵蚀隧洞: 睿治之径
+  饰品提取: 永恒笑剧
+  历战余响: 毁灭的开端 # 配置各副本类型的名称。
+
+# 分解设置
+break_down_level_four_relicset: false # 完成侵蚀隧洞、饰品提取、历战余响和模拟宇宙后是否自动分解四星及以下遗器。true 开启，false 关闭。
+
+# 队伍配置
+instance_team_enable: false # 是否在打副本时自动切换队伍。true 开启，false 关闭。
+instance_team_number: "5" # 自动切换的队伍编号。
+
+# 合成设置
+merge_immersifier: False # 是否优先合成沉浸器。true 开启，false 关闭。
+merge_immersifier_limit: "8" # 沉浸器上限。
+
+# 开拓力使用设置
+use_reserved_trailblaze_power: False # 是否使用后备开拓力。true 使用，false 不使用。
+use_fuel: False # 是否使用燃料。true 使用，false 不使用。
+
+# 历战余响设置
+echo_of_war_enable: false # 是否体力优先完成3次「历战余响」。true 开启，false 关闭。
+echo_of_war_timestamp: 0 # 上次完成3次「历战余响」的时间戳。用于记录和控制频率。
+
+# 支援角色配置
+borrow_enable: true # 是否使用支援角色。true 使用，false 不使用。
+borrow_character_enable: false # 是否强制使用支援角色。true 强制，false 不强制。
+borrow_friends:
+  - - March7th
+    - 赵相机
+  - - Qingque
+    - 用牌玩命
+  - - FuXuan
+    - 无情的卜算机器
+  - - None
+    - ""
+  - - None
+    - ""
+  - - None
+    - ""
+borrow_scroll_times: 5 # 支援列表滚动查找次数
+
+# 奖励领取设置
+reward_enable: true # 是否启用领取奖励功能。true 开启，false 关闭。
+reward_dispatch_enable: true # 是否领取委托奖励。true 开启，false 关闭。
+reward_mail_enable: true # 是否领取邮件奖励。true 开启，false 关闭。
+reward_assist_enable: true # 是否领取支援奖励。true 开启，false 关闭。
+reward_quest_enable: true # 是否领取每日实训奖励。true 开启，false 关闭。
+reward_srpass_enable: true # 是否领取无名勋礼。true 开启，false 关闭。
+
+# 日常任务设置
+daily_enable: true # 是否启用日常任务。true 开启，false 关闭。
+daily_himeko_try_enable: false # 是否通过“姬子试用”完成任务。true 开启，false 关闭。
+daily_memory_one_enable: false # 是否通过“回忆一”完成任务。true 开启，false 关闭。
+daily_memory_one_team: # 用于“回忆一”的队伍配置。
+  - - DanHeng
+    - -1
+  - - Natasha
+    - 0
+  - - March7th
+    - 0
+  - - Asta
+    - 0
+daily_tasks: [] # 每日实训任务的配置。
+last_run_timestamp: 0 # 上次运行日常任务的时间戳，用于记录和控制运行频率。
+
+# 活动设置
+activity_enable: true # 是否启用活动功能。true 开启，false 关闭。
+activity_dailycheckin_enable: true # 是否启用每日签到活动。true 开启，false 关闭。
+activity_gardenofplenty_enable: false # 是否启用花藏繁生活动。true 开启，false 关闭。
+activity_gardenofplenty_instance_type: 拟造花萼（金） # 花藏繁生副本类型。
+activity_realmofthestrange_enable: false # 是否启用异器盈界活动。true 开启，false 关闭。
+activity_planarfissure_enable: false # 是否启用位面分裂活动。true 开启，false 关闭。
+
+# 锄大地配置
+fight_enable: false # 是否启用锄大地功能。true 开启，false 关闭。
+fight_operation_mode: exe # 锄大地运行方式，可选 "源码"（source）或 "集成"（exe）。
+fight_path: .\3rdparty\Fhoe-Rail # 锄大地路径，指向锄大地脚本或程序的位置。
+fight_timeout: 6 # 锄大地超时时间（单位：小时），设置脚本或程序的最长运行时间。
+fight_team_enable: false # 是否在锄大地时自动切换队伍。true 开启，false 关闭。
+fight_team_number: "6" # 自动切换到的队伍编号。
+fight_requirements: false # 是否已安装锄大地依赖。true 表示已安装，false 表示未安装或需要重新安装。
+fight_timestamp: 0 # 上次运行锄大地的时间戳，用于记录和控制运行频率。
+fight_allow_map_buy: 不配置 # 购买代币与过期邮包
+fight_allow_snack_buy: 不配置 # 购买秘技零食并合成零食
+fight_main_map: "0" # 优先星球 {"空间站": "1", "雅利洛": "2", "仙舟": "3", "匹诺康尼": "4"}, "不配置": "0"
+
+# 模拟宇宙配置
+universe_enable: false # 是否启用模拟宇宙功能。true 开启，false 关闭。
+universe_operation_mode: exe # 模拟宇宙运行方式，可选 "源码"（source）或 "集成"（exe）。
+universe_category: divergent # 模拟宇宙类型，可选 "差分宇宙"（divergent）或 "模拟宇宙"（universe）。
+universe_disable_gpu: false # 是否禁用GPU加速。true 开启，false 关闭。
+universe_bonus_enable: false # 是否领取沉浸奖励。true 开启，false 关闭。
+universe_frequency: weekly # 模拟宇宙运行频率，可选 "每周"（weekly）或 "每天"（daily）。
+universe_count: 34 # 模拟宇宙运行次数，设置每次启动时尝试运行的次数。
+universe_path: .\3rdparty\Auto_Simulated_Universe # 模拟宇宙路径，指向模拟宇宙脚本或程序的位置。
+universe_timeout: 20 # 模拟宇宙超时时间（单位：小时），设置脚本或程序的最长运行时间。
+universe_requirements: false # 是否已安装模拟宇宙依赖。true 表示已安装，false 表示未安装或需要重新安装。
+universe_timestamp: 0 # 上次运行模拟宇宙的时间戳，用于记录和控制运行频率。
+universe_fate: "不配置" # 模拟宇宙使用的命途
+universe_difficulty: 0 # 模拟宇宙使用的难度
+
+# 忘却之庭配置
+forgottenhall_enable: false # 是否启用混沌回忆功能。true 开启，false 关闭。
+forgottenhall_level: # 混沌回忆关卡范围，设置允许尝试的关卡等级范围。
+  - 9
+  - 12
+# 混沌回忆队伍配置，详细配置每个队伍成员及其秘技使用次数。
+# 数字代表秘技使用次数，其中 -1 代表最后一个放秘技和普攻的角色。
+# 角色对应的英文名字可以在 "March7thAssistant\assets\images\character" 中查看
+forgottenhall_team1: # 队伍1配置。
+  - - Asta
+    - -1
+  - - JingYuan
+    - 1
+  - - Tingyun
+    - 2
+  - - Huohuo
+    - 1
+forgottenhall_team2: # 队伍2配置。
+  - - FuXuan
+    - 1
+  - - Bronya
+    - 1
+  - - Pela
+    - -1
+  - - Qingque
+    - 1
+forgottenhall_timestamp: 0 # 上次运行混沌回忆的时间戳，用于记录和控制运行频率。
+
+# 虚构叙事配置
+purefiction_enable: false # 是否启用虚构叙事功能。true 开启，false 关闭。
+purefiction_level: # 虚构叙事关卡范围，设置允许尝试的关卡等级范围。
+  - 3
+  - 4
+# 虚构叙事队伍配置，详细配置每个队伍成员及其秘技使用次数。
+# 数字代表秘技使用次数，其中 -1 代表最后一个放秘技和普攻的角色。
+# 角色对应的英文名字可以在 "March7thAssistant\assets\images\character" 中查看
+purefiction_team1: # 队伍1配置。
+  - - Asta
+    - -1
+  - - JingYuan
+    - 1
+  - - Tingyun
+    - 2
+  - - Huohuo
+    - 1
+purefiction_team2: # 队伍2配置。
+  - - FuXuan
+    - 1
+  - - Bronya
+    - 1
+  - - Pela
+    - -1
+  - - Qingque
+    - 1
+purefiction_timestamp: 0 # 上次运行虚构叙事的时间戳，用于记录和控制运行频率。
+
+# 末日幻影配置
+apocalyptic_enable: false # 是否启用末日幻影功能。true 开启，false 关闭。
+apocalyptic_level: # 末日幻影关卡范围，设置允许尝试的关卡等级范围。
+  - 3
+  - 4
+# 末日幻影队伍配置，详细配置每个队伍成员及其秘技使用次数。
+# 数字代表秘技使用次数，其中 -1 代表最后一个放秘技和普攻的角色。
+# 角色对应的英文名字可以在 "March7thAssistant\assets\images\character" 中查看
+apocalyptic_team1: # 队伍1配置。
+  - - Asta
+    - -1
+  - - JingYuan
+    - 1
+  - - Tingyun
+    - 2
+  - - Huohuo
+    - 1
+apocalyptic_team2: # 队伍2配置。
+  - - FuXuan
+    - 1
+  - - Bronya
+    - 1
+  - - Pela
+    - -1
+  - - Qingque
+    - 1
+apocalyptic_timestamp: 0 # 上次运行末日幻影的时间戳，用于记录和控制运行频率。
+# 自动战斗检测配置
+auto_battle_detect_enable: true # 是否启用自动战斗检测。true 开启，false 关闭。
+
+# 自动修改分辨率配置
+auto_set_resolution_enable: true # 是否启用自动修改分辨率功能。true 开启，false 关闭。
+
+# 自动配置游戏路径
+auto_set_game_path_enable: true # 是否启用自动配置游戏路径。true 开启，false 关闭。
+
+# 循环模式
+loop_mode: power # 可选值："power"（根据开拓力）, "scheduled"（定时任务）
+
+# 指定运行时间
+scheduled_time: 4:00
+
+# 游戏刷新时间设置
+refresh_hour: 4 # 设置游戏每日刷新的时间（24小时制）。
+
+# 游戏内秘技按键设置
+hotkey_technique: e # 设置游戏内使用秘技的按键。
+
+# 是否在多显示器上进行截屏（若开启无法正确运行请关闭）
+all_screens: true
+
+# 更新配置
+redemption_code: [] # 兑换码列表
+update_prerelease_enable: false # 是否加入预览版更新渠道。true 加入，false 不加入。
+update_full_enable: true # 更新时是否下载完整包。true 下载，false 不下载。
+auto_update: false
+
+# 消息推送配置
+# 消息推送格式配置
+notify_template:
+  Title: 三月七小助手|･ω･)
+  TestMessage: "这是一条测试消息"
+  ContinueTime: "将在{time}继续运行"
+  FullTime: "开拓力剩余{power}/240\n预计{time}回满"
+  NewVersion: "发现新版本 {version}"
+  ErrorOccurred: "发生错误 {error}"
+  DailyPracticeCompleted: "每日实训已完成"
+  DailyPracticeNotCompleted: "每日实训未完成"
+  InstanceNotCompleted: "清体力未完成 {error}"
+  LevelCleared: "{name}已通关{level}层"
+  LevelClearedWithIssue: "{name}已通关{level}层\n领取星琼失败"
+  SimulatedUniverseCompleted: "模拟宇宙已完成"
+  SimulatedUniverseRewardClaimed: "模拟宇宙奖励已领取"
+  SimulatedUniverseNotCompleted: "模拟宇宙未完成"
+  FightCompleted: "锄大地已完成"
+  FightNotCompleted: "锄大地未完成"
+
+# Windows 原生通知
+notify_winotify_enable: true # 是否启用 Windows 原生通知。true 开启，false 关闭。
+
+# Telegram 通知配置
+# 支持发送截图，依赖科学上网环境
+notify_telegram_enable: false # 是否启用 Telegram 通知。true 开启，false 关闭。
+notify_telegram_token: "" # Telegram bot 的 token。
+notify_telegram_userid: "" # 接收通知的用户或群组 ID。
+notify_telegram_api_url: "" # 可选参数，Telegram API 的自定义URL，默认为空。
+notify_telegram_proxies: "" # 可选参数，请求 Telegram API 是否使用代理。默认为空(使用系统PAC或不使用)。例如："127.0.0.1:10808", "socks5://127.0.0.1:1080/" 。
+
+# Server酱·Turbo版通知配置
+# 微信推送，适合小白，免费版每天限制五条
+# https://sct.ftqq.com/
+notify_serverchanturbo_enable: false # 是否启用 Server酱·Turbo 版通知。true 开启，false 关闭。
+notify_serverchanturbo_sctkey: "" # Server酱·Turbo 版的 SendKey。
+notify_serverchanturbo_channel: "" # 可选参数
+notify_serverchanturbo_openid: "" # 可选参数
+
+# Server酱·3版通知配置
+# Server酱的APP推送
+# https://sc3.ft07.com/
+notify_serverchan3_enable: false # 是否启用 Server酱·3 版通知。true 开启，false 关闭。
+notify_serverchan3_sendkey: "" # Server酱·3 版的 SendKey。
+
+# Bark 通知配置
+# 推荐 iOS 用户使用，直接在 App Store 下载安装
+notify_bark_enable: false # 是否启用 Bark 通知。true 开启，false 关闭。
+notify_bark_key: ""
+notify_bark_group: "March7thAssistant" # 可选参数，Bark 通知的分组名。
+notify_bark_icon: "https://cdn.jsdelivr.net/gh/moesnow/March7thAssistant@main/assets/app/images/March7th.jpg" # 可选参数，Bark 通知的图标 URL。
+notify_bark_isarchive: "1" # 可选参数，Bark 通知是否归档。
+notify_bark_sound: "" # 可选参数
+notify_bark_url: "" # 可选参数，自定义 Bark 服务的 URL。
+notify_bark_copy: "" # 可选参数
+notify_bark_autocopy: "" # 可选参数
+
+# Email/SMTP 邮箱通知配置
+# 支持发送截图，注意部分邮箱密码部分需要填写授权码（比如 QQ邮箱）
+notify_smtp_enable: false # 是否启用 Email/SMTP 邮箱通知。true 开启，false 关闭。
+notify_smtp_host: "" # SMTP 服务器地址。
+notify_smtp_user: "" # SMTP 用户名/邮箱。
+notify_smtp_password: "" # SMTP 密码或授权码。
+notify_smtp_From: "" # 发件人邮箱，默认为 smtp_user。
+notify_smtp_To: "" # 收件人邮箱，默认为 smtp_user。
+notify_smtp_port: "" # SMTP 服务器端口，默认为 465。
+notify_smtp_ssl: "" # 是否使用 SSL 连接 SMTP 服务器。默认为 True，可设置为 False 关闭。
+notify_smtp_starttls: "" # 是否使用 SSL 连接 SMTP 服务器。默认为 False，可设置为 True 关闭。
+notify_smtp_ssl_unverified: "" # 是否使用不经验证的 SSL 连接。默认为 False，可设置为 True 关闭。除非您使用自签名邮箱,否则不推荐启用。
+
+# 钉钉通知配置
+notify_dingtalk_enable: false # 是否启用钉钉通知。true 开启，false 关闭。
+notify_dingtalk_token: "" # 钉钉机器人的 Access Token。
+notify_dingtalk_secret: "" # 可选参数，钉钉机器人的安全设置中的加签密钥。
+
+# Pushplus 通知配置
+notify_pushplus_enable: false # 是否启用 Pushplus 通知。true 开启，false 关闭。
+notify_pushplus_token: "" # Pushplus 的 Token。
+notify_pushplus_channel: "" # 可选参数，Pushplus 的通知渠道。
+notify_pushplus_webhook: "" # 可选参数，Pushplus 的 Webhook URL。
+notify_pushplus_callbackUrl: "" # 可选参数，Pushplus 的回调 URL。
+
+# 企业微信应用通知配置
+# 支持发送截图
+notify_wechatworkapp_enable: false # 是否启用企业微信应用通知。true 开启，false 关闭。
+notify_wechatworkapp_corpid: "" # 企业微信的企业ID。
+notify_wechatworkapp_corpsecret: "" # 企业微信应用的密钥。
+notify_wechatworkapp_agentid: "" # 企业微信应用的AgentId。
+notify_wechatworkapp_touser: "" # 可选参数，企业微信应用通知的目标用户，"@all" 表示发送给所有人。
+
+# 企业微信机器人通知配置
+notify_wechatworkbot_enable: false # 是否启用企业微信机器人通知。true 开启，false 关闭。
+notify_wechatworkbot_key: "" # 企业微信机器人的 Key。
+
+# OneBot/OpenShamrock 通知配置（QQ 机器人）
+# 支持发送截图
+# https://github.com/whitechi73/OpenShamrock
+notify_onebot_enable: false # 是否启用 OneBot/OpenShamrock 通知。true 开启，false 关闭。
+notify_onebot_endpoint: "" # OneBot/OpenShamrock 的服务端点 URL，例如 http://127.0.0.1:5700
+notify_onebot_message_type: "" # 消息类型，填写 "private"（私聊消息）或 "group"（群消息）。
+notify_onebot_token: "" # 可选参数，验证请求的 Access Token。
+notify_onebot_user_id: "" # 可选参数，私聊消息的接收用户 ID。
+notify_onebot_group_id: "" # 可选参数，群消息的接收群组 ID。
+
+# Go-cqhttp 通知配置（已停止维护）
+# 支持发送截图
+# https://github.com/Mrs4s/go-cqhttp
+notify_gocqhttp_enable: false # 是否启用 Go-cqhttp 通知。true 开启，false 关闭。
+notify_gocqhttp_endpoint: "" # Go-cqhttp 的服务端点 URL。
+notify_gocqhttp_message_type: "" # 消息类型，填写 "private"（私聊消息）或 "group"（群消息）。
+notify_gocqhttp_token: "" # 可选参数，验证请求的 Access Token。
+notify_gocqhttp_user_id: "" # 可选参数，私聊消息的接收用户 ID。
+notify_gocqhttp_group_id: "" # 可选参数，群消息的接收群组 ID。
+
+# Gotify 通知配置
+notify_gotify_enable: false # 是否启用 Gotify 通知。true 开启，false 关闭。
+notify_gotify_url: "" # Gotify 服务器的 URL。
+notify_gotify_token: "" # Gotify 应用的 Access Token。
+notify_gotify_priority: 3 # 可选参数，通知优先级，范围从 1 到 10，越高优先级越高。以安卓为例，1-3 仅有通知栏图标，4-7 为图标+声音， 8-10 为图标+声音+震动。
+
+# Discord 通知配置
+notify_discord_enable: false # 是否启用 Discord 通知。true 开启，false 关闭。
+notify_discord_webhook: "" # Discord 通知的 Webhook URL。
+notify_discord_username: "" # 可选参数，自定义 Discord 通知的用户名。
+notify_discord_avatar_url: "" # 可选参数，自定义 Discord 通知的用户头像 URL。
+notify_discord_color: "" # 可选参数，Discord 通知嵌入消息的颜色。
+
+# Pushdeer 通知配置
+notify_pushdeer_enable: false # 是否启用 Pushdeer 通知。true 开启，false 关闭。
+notify_pushdeer_token: "" # Pushdeer 的 Token。
+notify_pushdeer_url: "" # 可选参数，自定义 Pushdeer 服务的 URL。
+
+# 飞书通知配置
+notify_lark_enable: false # 是否启用飞书通知。true 开启，false 关闭。
+notify_lark_webhook: "" # 飞书通知的 Webhook URL。
+notify_lark_content: "" # 飞书通知的内容。
+notify_lark_keyword: "" # 可选参数，如果设置了关键词安全设置，此处填写关键词， 如无关键词请设置为空，而非空字符串。（因onepush库bug）
+notify_lark_sign: "" # 可选参数，如果设置了签名安全设置，此处填写签名。
+notify_lark_imageenable: false # 是否启用图片信息发送，true 开启，false 关闭，默认为关闭
+notify_lark_appid: "" # 如启用图片信息发送，则必填，需自建飞书应用获取，详见https://open.feishu.cn/document/server-docs/api-call-guide/terminology
+notify_lark_secret: "" # 同上，需自建飞书应用获取，详见https://open.feishu.cn/document/server-docs/api-call-guide/terminology
+
+# 自定义通知配置
+# 支持发送截图
+notify_custom_enable: false # 是否启用自定义通知。true 开启，false 关闭。
+notify_custom_url: "" # onebot 请输入包含 api 的网址,如 http://localhost:3000/send_msg
+notify_custom_method: "" # 请求类型 [get/post], onebot 请输入 post
+notify_custom_datatype: "" # 数据类型 [data/json], onebot 请输入 json,默认 data
+# image项如果非空,请确保 data 项为 json 对象,并在最外层拥有一个 message 数组, json类型时 {image} 将会替换为 base64 数据
+notify_custom_image: "" #可选参数, 图片将转换为 base64 格式, onebot请参考 {type: image, data: {file: 'base64://{image}'}}
+# 如果 datatype 为 json,请确保 data 为准确的 json 格式,如果 datatype 为 data 则直接输出, json类型时 {message} 将会替换为 title+"\n"+content
+notify_custom_data: "" #onebot 请参考{user_id: 114514, message_type: private, message: [{type: text,data: {text: '{message}'}}]}
+
