@@ -43,7 +43,7 @@ class BannerWidget(QWidget):
         # 将阴影效果应用于小部件
         self.galleryLabel.setGraphicsEffect(shadow)
 
-        self.img = Image.open("./assets/app/images/bg37.jpg")
+        self.img = Image.open("./assets/app/images/rs.jpg")
         self.banner = None
         self.path = None
 
@@ -72,7 +72,7 @@ class BannerWidget(QWidget):
             FluentIcon.GITHUB,
             self.tr('GitHub repo'),
             self.tr('喜欢就给个星星吧\n拜托求求你啦|･ω･)'),
-            "https://github.com/moesnow/March7thAssistant",
+            "https://github.com/ytkz11/rs-tool",
         )
 
     def paintEvent(self, e):
