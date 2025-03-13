@@ -42,3 +42,11 @@ class Content(Enum):
                         📢 out文件夹不需要提前建立
                         📢 输出文件名字与你选择的字段保持一致
                         """
+    POLYGON2POLYLINE_TITLE = "📣面矢量转换为线矢量"
+    POLYGON2POLYLINE_CONTENT = """
+                        📢 输出文件保存在输入文件相同的文件夹下
+                        """
+    IMAGEFOOTPRINT_TITLE = "📣栅格影像的有效范围轮廓矢量生成"
+    IMAGEFOOTPRINT_CONTENT = """
+                        📢 输出文件保存在输入文件相同的文件夹下
+                        """
