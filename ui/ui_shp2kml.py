@@ -50,8 +50,6 @@ class shp2kmlWidget_origin(QFrame, Ui_Form):
                 if os.path.exists(self.tool.path):
                     self.progressBar.start()
 
-
-
                     # 检查坐标系统是否为 WGS84
                     if check_is_84(self.tool.path):
                         print(f'The projection of the file is WGS84.')
@@ -69,19 +67,6 @@ class shp2kmlWidget_origin(QFrame, Ui_Form):
                                     os.remove(os.path.splitext(file)[0]+suf)
                         except Exception as e:
                             print(e)
-
-                        '''
-                            VectorTranslate(
-        shapeFilePath,
-        saveFolderPath,
-        format="ESRI Shapefile",
-        accessMode=None,
-        dstSrsESPG=4326,
-        selectFields=None,
-        geometryType="POLYGON",
-        dim="XY",
-    )
-                        '''
 
                 else:
                     self.shp2kml_process_btn.setText("请输入正确的shp文件路径，再点击")
