@@ -66,3 +66,9 @@ pyinstaller --onefile --windowed --icon=.\resources\logo.ico rstool.py
 2. 建议在非系统目录执行数据转换
 3. 支持Windows 10/11及Ubuntu 20.04+系统
 4. 处理大型数据时预留充足磁盘空间
+
+
+0.0.9更新
+- 新增遥感影像黑边去除处理功能
+- 美化按钮布局
+
