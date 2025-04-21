@@ -50,7 +50,7 @@ pip install pyqt5 qfluentwidgets gdal pyinstaller
 python shpPolygon2Polyline.py
 
 # 打包独立可执行文件
-pyinstaller --onefile --windowed --icon=.\resources\logo.ico rstool.py
+pyinstaller --onefile --windowed --icon=.\resources\images\icon.ico rstool.py
 
 
 ## 更新日志
