@@ -182,7 +182,7 @@ class Window(FluentWindow):
 
     def remove_black_edge_thread(self, widget):
         self.worker = Worker(widget)
-        self.worker.finished.connect(self.showFlyout)
+        # self.worker.finished.connect(self.showFlyout)
         self.worker.start()
 
     def Image_footprint_thread(self, widget):
